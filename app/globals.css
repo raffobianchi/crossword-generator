@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0C0C10;
+    --foreground: #F4F4F5;
+    --surface: #15151C;
+    --surface-alt: #1E1E2A;
+    --border: #2D2D3D;
+    --primary: #6D28D9;
+    --primary-light: #8B5CF6;
+    --accent: #D97706;
+    --accent-light: #F59E0B;
+    --muted: #3F3F46;
+    --muted-foreground: #71717A;
+  }
+
+  * {
+    border-color: theme('colors.border');
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0C0C10;
+    color: #F4F4F5;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+}
+
+@layer components {
+  /* Crossword grid cell base styles */
+  .crossword-cell {
+    @apply relative border border-gray-300 select-none cursor-pointer transition-colors duration-100;
+    aspect-ratio: 1;
+  }
+
+  .crossword-cell-black {
+    @apply bg-black border-gray-800 cursor-default;
+  }
+
+  .crossword-cell-empty {
+    @apply bg-white hover:bg-violet-50;
+  }
+
+  .crossword-cell-selected {
+    @apply bg-violet-200 border-violet-400;
+  }
+
+  .crossword-cell-highlighted {
+    @apply bg-violet-50;
+  }
+
+  .crossword-cell-correct {
+    @apply bg-emerald-100;
+  }
+
+  .crossword-cell-error {
+    @apply bg-red-100;
+  }
+
+  .crossword-cell-revealed {
+    @apply bg-amber-50;
+  }
+
+  /* Clue number inside cell */
+  .crossword-cell-number {
+    @apply absolute top-0.5 left-0.5 text-gray-500 leading-none pointer-events-none font-sans;
+    font-size: 9px;
+  }
+
+  /* Letter inside cell */
+  .crossword-cell-letter {
+    @apply absolute inset-0 flex items-center justify-center font-bold text-gray-900 pointer-events-none font-sans uppercase;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #15151C;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2D2D3D;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3F3F46;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-radial-glow {
+    background: radial-gradient(ellipse at top, rgba(109, 40, 217, 0.15) 0%, transparent 60%);
+  }
+}
