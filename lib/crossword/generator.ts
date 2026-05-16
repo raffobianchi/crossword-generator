@@ -30,7 +30,11 @@ class CrosswordGenerator {
     // Build letter → word index for O(1) lookup
     this.wordsByLetter = new Map();
     for (const word of this.words) {
-      for (const letter of new Set(word.text)) {
+      const seen = new Set<string>();
+      for (let k = 0; k < word.text.length; k++) {
+        const letter = word.text[k];
+        if (seen.has(letter)) continue;
+        seen.add(letter);
         const list = this.wordsByLetter.get(letter) ?? [];
         list.push(word);
         this.wordsByLetter.set(letter, list);
