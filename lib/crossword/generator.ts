@@ -62,7 +62,7 @@ class CrosswordGenerator {
       return false;
     }
     let attempts = 0;
-    const maxAttempts = 150;
+    const maxAttempts = 250;
     while (attempts < maxAttempts) {
       if (this.addWord()) {
         attempts = 0;
@@ -161,34 +161,58 @@ class CrosswordGenerator {
 
   private checkAdjacentWords(word: string, row: number, col: number, isHorizontal: boolean): boolean {
     if (!this.wordSet.has(word)) return false;
+
+    // Simulate placement on a temp grid, then scan every affected row/col in full.
+    // This catches sequences formed by combining letters from multiple words that
+    // are not immediate neighbors (the root cause of the "NIV" / invalid-sequence bug).
+    const temp: string[][] = this.grid.map((r) => r.map((cell) => cell.letter));
+    for (let i = 0; i < word.length; i++) {
+      const r = isHorizontal ? row : row + i;
+      const c = isHorizontal ? col + i : col;
+      temp[r][c] = word[i];
+    }
+
     if (isHorizontal) {
+      if (!this.checkFullRowInTemp(row, temp)) return false;
       for (let i = 0; i < word.length; i++) {
-        const currRow = row;
-        const currCol = col + i;
-        const hasAbove = currRow > 0 && this.grid[currRow - 1][currCol].letter !== ' ' && this.grid[currRow - 1][currCol].letter !== '#';
-        const hasBelow = currRow < this.size - 1 && this.grid[currRow + 1][currCol].letter !== ' ' && this.grid[currRow + 1][currCol].letter !== '#';
-        if (hasAbove || hasBelow) {
-          const verticalWord = this.getVerticalWord(currRow, currCol, word[i]);
-          if (verticalWord && verticalWord.length >= 2 && !this.wordSet.has(verticalWord)) {
-            return false;
-          }
-        }
+        if (!this.checkFullColInTemp(col + i, temp)) return false;
       }
     } else {
+      if (!this.checkFullColInTemp(col, temp)) return false;
       for (let i = 0; i < word.length; i++) {
-        const currRow = row + i;
-        const currCol = col;
-        const hasLeft = currCol > 0 && this.grid[currRow][currCol - 1].letter !== ' ' && this.grid[currRow][currCol - 1].letter !== '#';
-        const hasRight = currCol < this.size - 1 && this.grid[currRow][currCol + 1].letter !== ' ' && this.grid[currRow][currCol + 1].letter !== '#';
-        if (hasLeft || hasRight) {
-          const horizontalWord = this.getHorizontalWord(currRow, currCol, word[i]);
-          if (horizontalWord && horizontalWord.length >= 2 && !this.wordSet.has(horizontalWord)) {
-            return false;
-          }
-        }
+        if (!this.checkFullRowInTemp(row + i, temp)) return false;
       }
     }
+
     return true;
+  }
+
+  private checkFullRowInTemp(row: number, temp: string[][]): boolean {
+    let seq = '';
+    for (let c = 0; c < this.size; c++) {
+      const ch = temp[row][c];
+      if (ch !== ' ' && ch !== '#') {
+        seq += ch;
+      } else {
+        if (seq.length >= 2 && !this.wordSet.has(seq)) return false;
+        seq = '';
+      }
+    }
+    return !(seq.length >= 2 && !this.wordSet.has(seq));
+  }
+
+  private checkFullColInTemp(col: number, temp: string[][]): boolean {
+    let seq = '';
+    for (let r = 0; r < this.size; r++) {
+      const ch = temp[r][col];
+      if (ch !== ' ' && ch !== '#') {
+        seq += ch;
+      } else {
+        if (seq.length >= 2 && !this.wordSet.has(seq)) return false;
+        seq = '';
+      }
+    }
+    return !(seq.length >= 2 && !this.wordSet.has(seq));
   }
 
   private findIntersections(): [number, number, string, boolean][] {
@@ -461,34 +485,6 @@ class CrosswordGenerator {
     return leftOf && col < this.size - 1 && this.grid[row][col + 1].letter === ' ';
   }
 
-  private getVerticalWord(row: number, col: number, newLetter: string): string | null {
-    let startRow = row;
-    while (startRow > 0 && this.grid[startRow - 1][col].letter !== ' ' && this.grid[startRow - 1][col].letter !== '#') {
-      startRow--;
-    }
-    const word: string[] = [];
-    let curr = startRow;
-    while (curr < this.size && this.grid[curr][col].letter !== ' ' && this.grid[curr][col].letter !== '#') {
-      word.push(curr === row ? newLetter : this.grid[curr][col].letter);
-      curr++;
-    }
-    return word.length > 0 ? word.join('') : null;
-  }
-
-  private getHorizontalWord(row: number, col: number, newLetter: string): string | null {
-    let startCol = col;
-    while (startCol > 0 && this.grid[row][startCol - 1].letter !== ' ' && this.grid[row][startCol - 1].letter !== '#') {
-      startCol--;
-    }
-    const word: string[] = [];
-    let curr = startCol;
-    while (curr < this.size && this.grid[row][curr].letter !== ' ' && this.grid[row][curr].letter !== '#') {
-      word.push(curr === col ? newLetter : this.grid[row][curr].letter);
-      curr++;
-    }
-    return word.length > 0 ? word.join('') : null;
-  }
-
   private canPlaceWordWithoutConflict(
     word: string,
     row: number,
@@ -497,7 +493,6 @@ class CrosswordGenerator {
   ): boolean {
     if (!this.isValidPosition(row, col, word, isHorizontal)) return false;
 
-    // Build a single temp grid with ALL letters of the word placed at once
     const temp: string[][] = this.grid.map((r) => r.map((cell) => cell.letter));
     for (let i = 0; i < word.length; i++) {
       const r = isHorizontal ? row : row + i;
@@ -506,42 +501,18 @@ class CrosswordGenerator {
       temp[r][c] = word[i];
     }
 
-    // Now check all cross-sequences
-    for (let i = 0; i < word.length; i++) {
-      const r = isHorizontal ? row : row + i;
-      const c = isHorizontal ? col + i : col;
-
-      const vert = this.getWordAtPosition(r, c, false, temp);
-      if (vert && vert.length >= 2 && !this.wordSet.has(vert)) return false;
-
-      const horz = this.getWordAtPosition(r, c, true, temp);
-      if (horz && horz.length >= 2 && !this.wordSet.has(horz)) return false;
+    if (isHorizontal) {
+      if (!this.checkFullRowInTemp(row, temp)) return false;
+      for (let i = 0; i < word.length; i++) {
+        if (!this.checkFullColInTemp(col + i, temp)) return false;
+      }
+    } else {
+      if (!this.checkFullColInTemp(col, temp)) return false;
+      for (let i = 0; i < word.length; i++) {
+        if (!this.checkFullRowInTemp(row + i, temp)) return false;
+      }
     }
     return true;
-  }
-
-  private getWordAtPosition(
-    row: number,
-    col: number,
-    isHorizontal: boolean,
-    grid: string[][]
-  ): string | null {
-    let sr = row;
-    let sc = col;
-    if (isHorizontal) {
-      while (sc > 0 && grid[row][sc - 1] !== ' ' && grid[row][sc - 1] !== '#') sc--;
-    } else {
-      while (sr > 0 && grid[sr - 1][col] !== ' ' && grid[sr - 1][col] !== '#') sr--;
-    }
-    const word: string[] = [];
-    let cr = sr;
-    let cc = sc;
-    while (cr < this.size && cc < this.size && grid[cr][cc] !== ' ' && grid[cr][cc] !== '#') {
-      word.push(grid[cr][cc]);
-      if (isHorizontal) cc++;
-      else cr++;
-    }
-    return word.length > 0 ? word.join('') : null;
   }
 
   private fillEmptySpaces(): void {
@@ -707,8 +678,8 @@ export function generateCrossword(options: GenerateOptions, words: Word[]): Cros
   const { size, seed } = options;
   const baseSeed = seed ?? Date.now();
 
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const rng = new SeededRandom(baseSeed + attempt * 1000000);
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const rng = new SeededRandom(baseSeed + attempt);
     const gen = new CrosswordGenerator(size, words, rng);
     if (gen.generate()) {
       const id = seed !== undefined ? `${seed}` : `${Date.now()}`;
