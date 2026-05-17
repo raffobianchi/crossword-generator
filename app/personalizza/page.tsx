@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sliders, Loader2, RefreshCw, AlertCircle, Sparkles } from 'lucide-react';
+import { Sliders, Loader2, RefreshCw, AlertCircle, Leaf } from 'lucide-react';
 import { CrosswordGame } from '@/components/crossword/CrosswordGame';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
 import type { CrosswordPuzzle } from '@/lib/crossword/types';
 
 const SIZES = [
-  { id: 'small', label: 'Piccolo', desc: '10×10', emoji: '🔹' },
-  { id: 'medium', label: 'Medio', desc: '13×13', emoji: '🔷' },
-  { id: 'large', label: 'Grande', desc: '16×16', emoji: '🟣' },
-  { id: 'xl', label: 'XL', desc: '19×19', emoji: '💜' },
+  { id: 'small', label: 'Piccolo', desc: '10×10', emoji: '🌰' },
+  { id: 'medium', label: 'Medio', desc: '13×13', emoji: '🪵' },
+  { id: 'large', label: 'Grande', desc: '16×16', emoji: '🌿' },
+  { id: 'xl', label: 'XL', desc: '19×19', emoji: '🌳' },
 ] as const;
 
 const DIFFICULTIES = [
@@ -20,28 +20,28 @@ const DIFFICULTIES = [
     id: 'easy',
     label: 'Facile',
     desc: 'Parole brevi (3–7 lettere)',
-    color: 'text-emerald-400',
-    activeBg: 'from-emerald-500/15 to-emerald-500/5',
-    activeBorder: 'border-emerald-500/40',
-    dot: 'bg-emerald-400',
+    activeText: 'text-accent-light',
+    activeBg: 'from-accent/15 to-accent/5',
+    activeBorder: 'border-accent/40',
+    dot: 'bg-accent-light',
   },
   {
     id: 'medium',
     label: 'Medio',
     desc: 'Parole miste (4–10 lettere)',
-    color: 'text-amber-400',
-    activeBg: 'from-amber-500/15 to-amber-500/5',
-    activeBorder: 'border-amber-500/40',
-    dot: 'bg-amber-400',
+    activeText: 'text-nuts-light',
+    activeBg: 'from-nuts/15 to-nuts/5',
+    activeBorder: 'border-nuts/40',
+    dot: 'bg-nuts-light',
   },
   {
     id: 'hard',
     label: 'Difficile',
     desc: 'Parole lunghe (5–15 lettere)',
-    color: 'text-rose-400',
-    activeBg: 'from-rose-500/15 to-rose-500/5',
-    activeBorder: 'border-rose-500/40',
-    dot: 'bg-rose-400',
+    activeText: 'text-primary-light',
+    activeBg: 'from-primary/15 to-primary/5',
+    activeBorder: 'border-primary/40',
+    dot: 'bg-primary-light',
   },
 ] as const;
 
@@ -89,16 +89,16 @@ export default function PersonalizzaPage() {
     <div className="min-h-screen bg-radial-glow">
       {/* Hero */}
       <section className="border-b border-border/60 relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+        <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-nuts/10 blur-3xl" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14 relative">
           <div className="flex items-center gap-2 mb-4">
-            <Badge variant="accent">
+            <Badge variant="nuts">
               <Sliders className="h-3 w-3 mr-1" />
               Personalizza
             </Badge>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-balance">
-            <span className="text-zinc-100">Crea il </span>
+            <span className="text-[#EDE0CE]">Crea il </span>
             <span className="text-gradient">Tuo Cruciverba</span>
           </h1>
           <p className="mt-3 text-muted-foreground text-lg max-w-xl">
@@ -113,7 +113,7 @@ export default function PersonalizzaPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Size */}
             <div>
-              <h2 className="font-serif text-lg font-semibold text-zinc-200 mb-4">Dimensione</h2>
+              <h2 className="font-serif text-lg font-semibold text-[#EDE0CE] mb-4">Dimensione</h2>
               <div className="grid grid-cols-2 gap-2.5">
                 {SIZES.map((size) => (
                   <button
@@ -122,15 +122,15 @@ export default function PersonalizzaPage() {
                     className={cn(
                       'flex flex-col items-start gap-1 rounded-2xl border p-4 text-left transition-all duration-200',
                       selectedSize === size.id
-                        ? 'border-primary/50 bg-gradient-to-br from-primary/15 to-primary/5 shadow-lg shadow-primary/10'
+                        ? 'border-primary/50 bg-gradient-to-br from-primary/15 to-nuts/10 shadow-md shadow-primary/10'
                         : 'border-border/60 bg-surface-alt/50 hover:border-primary/30 hover:bg-surface-alt'
                     )}
                   >
-                    <span className="text-lg">{size.emoji}</span>
+                    <span className="text-xl">{size.emoji}</span>
                     <span
                       className={cn(
                         'font-semibold text-sm',
-                        selectedSize === size.id ? 'text-primary-light' : 'text-zinc-200'
+                        selectedSize === size.id ? 'text-primary-light' : 'text-[#EDE0CE]'
                       )}
                     >
                       {size.label}
@@ -143,7 +143,7 @@ export default function PersonalizzaPage() {
 
             {/* Difficulty */}
             <div>
-              <h2 className="font-serif text-lg font-semibold text-zinc-200 mb-4">Difficoltà</h2>
+              <h2 className="font-serif text-lg font-semibold text-[#EDE0CE] mb-4">Difficoltà</h2>
               <div className="flex flex-col gap-2.5">
                 {DIFFICULTIES.map((diff) => (
                   <button
@@ -160,7 +160,7 @@ export default function PersonalizzaPage() {
                       <span
                         className={cn(
                           'font-semibold text-sm block',
-                          selectedDifficulty === diff.id ? diff.color : 'text-zinc-200'
+                          selectedDifficulty === diff.id ? diff.activeText : 'text-[#EDE0CE]'
                         )}
                       >
                         {diff.label}
@@ -168,7 +168,7 @@ export default function PersonalizzaPage() {
                       <span className="text-xs text-muted-foreground mt-0.5">{diff.desc}</span>
                     </div>
                     {selectedDifficulty === diff.id && (
-                      <div className={`h-2.5 w-2.5 rounded-full ${diff.dot} shadow-lg`} />
+                      <div className={`h-2.5 w-2.5 rounded-full ${diff.dot} shadow-sm`} />
                     )}
                   </button>
                 ))}
@@ -177,12 +177,7 @@ export default function PersonalizzaPage() {
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-            <Button
-              size="lg"
-              onClick={handleGenerate}
-              disabled={loading}
-              className="w-full sm:w-auto px-10"
-            >
+            <Button size="lg" onClick={handleGenerate} disabled={loading} className="w-full sm:w-auto px-10">
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -190,7 +185,7 @@ export default function PersonalizzaPage() {
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-4 w-4 mr-2" />
+                  <Leaf className="h-4 w-4 mr-2" />
                   Genera Cruciverba
                 </>
               )}
@@ -208,11 +203,11 @@ export default function PersonalizzaPage() {
 
         {/* Error state */}
         {error && (
-          <div className="flex items-start gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 mb-6 animate-fade-in">
-            <AlertCircle className="h-5 w-5 text-rose-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 rounded-2xl border border-red-800/40 bg-red-900/20 px-4 py-3 mb-6 animate-fade-in">
+            <AlertCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-rose-300 text-sm">Errore di generazione</p>
-              <p className="text-sm text-rose-400/70 mt-0.5">{error}</p>
+              <p className="font-semibold text-red-300 text-sm">Errore di generazione</p>
+              <p className="text-sm text-red-400/70 mt-0.5">{error}</p>
             </div>
           </div>
         )}
@@ -221,13 +216,13 @@ export default function PersonalizzaPage() {
         {loading && (
           <div className="flex flex-col items-center gap-6 py-20 animate-fade-in">
             <div className="relative">
-              <div className="h-20 w-20 rounded-3xl border-2 border-primary/40 bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center animate-glow">
+              <div className="h-20 w-20 rounded-3xl border-2 border-primary/40 bg-gradient-to-br from-primary/10 to-nuts/5 flex items-center justify-center animate-glow">
                 <Loader2 className="h-9 w-9 text-primary-light animate-spin" />
               </div>
               <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent animate-pulse" />
             </div>
             <div className="text-center">
-              <p className="font-serif text-2xl text-zinc-200">Generazione in corso…</p>
+              <p className="font-serif text-2xl text-[#EDE0CE]">Generazione in corso…</p>
               <p className="text-sm text-muted-foreground mt-1">
                 L&apos;AI sta costruendo il tuo cruciverba personalizzato
               </p>
@@ -240,7 +235,7 @@ export default function PersonalizzaPage() {
           <div className="animate-slide-up">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-zinc-100">Il Tuo Cruciverba</h2>
+                <h2 className="font-serif text-2xl font-bold text-[#EDE0CE]">Il Tuo Cruciverba</h2>
                 <p className="text-sm text-muted-foreground mt-0.5">
                   <span className="text-primary-light font-medium">{puzzle.wordCount} parole</span>
                   {' · '}
@@ -265,11 +260,11 @@ export default function PersonalizzaPage() {
               <div className="h-24 w-24 rounded-3xl border border-border/60 bg-gradient-to-br from-surface-alt to-surface flex items-center justify-center animate-float">
                 <span className="text-4xl">🧩</span>
               </div>
-              <div className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-primary/40 border border-primary/60 animate-pulse" />
-              <div className="absolute -bottom-1 -left-1 h-3 w-3 rounded-full bg-accent/40 border border-accent/60 animate-pulse" style={{ animationDelay: '0.5s' }} />
+              <div className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-primary/40 border border-primary/50 animate-pulse" />
+              <div className="absolute -bottom-1 -left-1 h-3 w-3 rounded-full bg-accent/50 border border-accent/60 animate-pulse" style={{ animationDelay: '0.6s' }} />
             </div>
             <div>
-              <p className="font-serif text-2xl text-zinc-200">Nessun cruciverba generato</p>
+              <p className="font-serif text-2xl text-[#EDE0CE]">Nessun cruciverba generato</p>
               <p className="text-sm text-muted-foreground mt-1.5">
                 Configura le opzioni qui sopra e premi{' '}
                 <span className="text-primary-light">"Genera Cruciverba"</span>

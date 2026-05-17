@@ -4,19 +4,20 @@
 
 @layer base {
   :root {
-    --background: #080614;
-    --foreground: #EDE9FE;
-    --surface: #100D22;
-    --surface-alt: #181436;
-    --border: #29234F;
-    --primary: #7C3AED;
-    --primary-light: #A78BFA;
-    --accent: #F43F5E;
-    --accent-light: #FB7185;
-    --fun-cyan: #06B6D4;
-    --fun-lime: #84CC16;
-    --muted: #3D3860;
-    --muted-foreground: #7C75A8;
+    --background: #16100A;
+    --foreground: #EDE0CE;
+    --surface: #1F1610;
+    --surface-alt: #2A1D12;
+    --border: #3D2B1A;
+    --primary: #C4845A;
+    --primary-light: #DCB08A;
+    --primary-dark: #A86840;
+    --accent: #7A9E69;
+    --accent-light: #9DBE8D;
+    --nuts: #B8945C;
+    --nuts-light: #D0AC78;
+    --muted: #5A4535;
+    --muted-foreground: #A08878;
   }
 
   * {
@@ -31,8 +32,8 @@
   }
 
   body {
-    background-color: #080614;
-    color: #EDE9FE;
+    background-color: #16100A;
+    color: #EDE0CE;
     font-family: var(--font-inter), system-ui, sans-serif;
     min-height: 100vh;
   }
@@ -44,46 +45,59 @@
 
 @layer components {
   .crossword-cell {
-    @apply relative border border-gray-300 select-none cursor-pointer transition-colors duration-100;
+    @apply relative border select-none cursor-pointer transition-colors duration-100;
+    border-color: #C8A888;
     aspect-ratio: 1;
   }
 
   .crossword-cell-black {
-    @apply bg-[#1a1040] border-[#29234F] cursor-default;
+    background-color: #2A1D12;
+    border-color: #3D2B1A;
+    @apply cursor-default;
   }
 
   .crossword-cell-empty {
-    @apply bg-white hover:bg-violet-50;
+    background-color: #FDF8F0;
+  }
+
+  .crossword-cell-empty:hover {
+    background-color: #F5E6D0;
   }
 
   .crossword-cell-selected {
-    @apply bg-violet-500 border-violet-400;
+    background-color: #C4845A;
+    border-color: #A86840;
   }
 
   .crossword-cell-highlighted {
-    @apply bg-violet-100 border-violet-200;
+    background-color: #F8E8D4;
+    border-color: #DCB08A;
   }
 
   .crossword-cell-correct {
-    @apply bg-emerald-100 border-emerald-300;
+    background-color: #D4E8C4;
+    border-color: #9DBE8D;
   }
 
   .crossword-cell-error {
-    @apply bg-rose-100 border-rose-300;
+    background-color: #EECCC4;
+    border-color: #D49088;
   }
 
   .crossword-cell-revealed {
-    @apply bg-amber-100 border-amber-300;
+    background-color: #F0DEB4;
+    border-color: #D0AC78;
   }
 
   .crossword-cell-number {
-    @apply absolute top-0.5 left-0.5 leading-none pointer-events-none font-sans text-violet-600;
+    @apply absolute top-0.5 left-0.5 leading-none pointer-events-none font-sans;
+    color: #A86840;
     font-size: 9px;
   }
 
   .crossword-cell-letter {
     @apply absolute inset-0 flex items-center justify-center font-bold pointer-events-none font-sans uppercase;
-    color: #1a1040;
+    color: #2A1D12;
   }
 
   .crossword-cell-selected .crossword-cell-letter {
@@ -91,7 +105,7 @@
   }
 
   .crossword-cell-selected .crossword-cell-number {
-    @apply text-violet-200;
+    color: #F8E8D4;
   }
 
   ::-webkit-scrollbar {
@@ -100,16 +114,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #100D22;
+    background: #1F1610;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #29234F;
+    background: #3D2B1A;
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #3D3860;
+    background: #5A4535;
   }
 }
 
@@ -120,34 +134,30 @@
 
   .bg-radial-glow {
     background:
-      radial-gradient(ellipse at 15% 20%, rgba(124, 58, 237, 0.22) 0%, transparent 45%),
-      radial-gradient(ellipse at 85% 80%, rgba(244, 63, 94, 0.14) 0%, transparent 45%),
-      radial-gradient(ellipse at 60% 10%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+      radial-gradient(ellipse at 20% 25%, rgba(196, 132, 90, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 75%, rgba(122, 158, 105, 0.12) 0%, transparent 48%),
+      radial-gradient(ellipse at 55% 95%, rgba(184, 148, 92, 0.10) 0%, transparent 42%);
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #A78BFA 0%, #FB7185 100%);
+    background: linear-gradient(135deg, #DCB08A 0%, #9DBE8D 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .text-gradient-cyan {
-    background: linear-gradient(135deg, #22D3EE 0%, #A78BFA 100%);
+  .text-gradient-warm {
+    background: linear-gradient(135deg, #DCB08A 0%, #D0AC78 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  .border-gradient {
-    border-image: linear-gradient(135deg, #7C3AED, #F43F5E) 1;
   }
 
   .glow-primary {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.35), 0 0 60px rgba(124, 58, 237, 0.1);
+    box-shadow: 0 0 20px rgba(196, 132, 90, 0.35), 0 0 50px rgba(196, 132, 90, 0.12);
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px rgba(244, 63, 94, 0.3), 0 0 60px rgba(244, 63, 94, 0.08);
+    box-shadow: 0 0 20px rgba(122, 158, 105, 0.30), 0 0 50px rgba(122, 158, 105, 0.10);
   }
 }

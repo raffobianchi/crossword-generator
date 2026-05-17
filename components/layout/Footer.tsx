@@ -3,16 +3,16 @@ import { LayoutGrid } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-surface/50 mt-auto">
+    <footer className="border-t border-border/70 bg-surface/50 mt-auto">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-md shadow-primary/30">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-nuts shadow-md shadow-primary/30">
               <LayoutGrid className="h-4 w-4 text-white" />
             </div>
             <span className="font-serif text-lg font-bold">
               <span className="text-gradient">enigmistica</span>
-              <span className="text-zinc-500">.ai</span>
+              <span className="text-muted-foreground">.ai</span>
             </span>
           </div>
 

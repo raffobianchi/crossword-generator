@@ -15,19 +15,18 @@ export default function HomePage() {
     <div className="min-h-screen bg-radial-glow">
       {/* Hero section */}
       <section className="border-b border-border/60 relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-        <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-accent/8 blur-3xl" />
+        <div className="pointer-events-none absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/12 blur-3xl" />
+        <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-accent/8 blur-3xl" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14 relative">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Badge variant="accent">
+                <Badge variant="default">
                   <Calendar className="h-3 w-3 mr-1" />
                   Oggi
                 </Badge>
-                <Badge variant="default">
+                <Badge variant="accent">
                   <Zap className="h-3 w-3 mr-1" />
                   Giornaliero
                 </Badge>
@@ -35,13 +34,13 @@ export default function HomePage() {
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-balance">
                 <span className="text-gradient">Il Cruciverba</span>
                 <br />
-                <span className="text-zinc-100">di Oggi</span>
+                <span className="text-[#EDE0CE]">di Oggi</span>
               </h1>
               <p className="mt-3 text-muted-foreground capitalize text-lg">{dateString}</p>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-surface/60 border border-border/50 rounded-xl px-4 py-2.5">
-              <Users className="h-4 w-4 text-fun-cyan" />
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-surface/70 border border-border/50 rounded-xl px-4 py-2.5">
+              <Users className="h-4 w-4 text-accent-light" />
               <span>Lo stesso per tutta Italia</span>
             </div>
           </div>
@@ -58,38 +57,41 @@ export default function HomePage() {
       {/* Info strip */}
       <section className="border-t border-border/60 bg-surface/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
               {
                 icon: '🇮🇹',
-                iconBg: 'from-primary/20 to-primary/5 border-primary/20',
+                iconBg: 'from-primary/20 to-primary/5',
+                iconBorder: 'border-primary/25',
                 title: 'Solo in Italiano',
                 desc: 'Parole e definizioni interamente in italiano, dal nostro dizionario di oltre 49.000 voci.',
               },
               {
-                icon: '🤖',
-                iconBg: 'from-accent/20 to-accent/5 border-accent/20',
+                icon: '🌿',
+                iconBg: 'from-accent/20 to-accent/5',
+                iconBorder: 'border-accent/25',
                 title: "Generato dall'AI",
                 desc: 'Ogni cruciverba è generato automaticamente ogni giorno alle mezzanotte.',
               },
               {
                 icon: '🧩',
-                iconBg: 'from-fun-cyan/15 to-fun-cyan/5 border-fun-cyan/20',
+                iconBg: 'from-nuts/20 to-nuts/5',
+                iconBorder: 'border-nuts/25',
                 title: 'Un puzzle al giorno',
                 desc: 'Il cruciverba giornaliero è uguale per tutti. Confronta il tuo tempo con gli amici!',
               },
             ].map((item) => (
               <div
                 key={item.title}
-                className="flex gap-4 rounded-2xl bg-surface/50 border border-border/50 p-4 hover:border-primary/30 transition-colors"
+                className="flex gap-4 rounded-2xl bg-surface/60 border border-border/50 p-4 hover:border-primary/30 transition-colors"
               >
                 <div
-                  className={`shrink-0 h-11 w-11 rounded-xl bg-gradient-to-br ${item.iconBg} border flex items-center justify-center text-xl`}
+                  className={`shrink-0 h-11 w-11 rounded-xl bg-gradient-to-br ${item.iconBg} border ${item.iconBorder} flex items-center justify-center text-xl`}
                 >
                   {item.icon}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-zinc-200 text-sm">{item.title}</h3>
+                  <h3 className="font-semibold text-[#EDE0CE] text-sm">{item.title}</h3>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.desc}</p>
                 </div>
               </div>

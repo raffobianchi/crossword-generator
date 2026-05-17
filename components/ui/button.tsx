@@ -9,17 +9,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-gradient-to-r from-primary to-primary-light text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:brightness-110 active:scale-95',
+          'bg-gradient-to-r from-primary to-nuts text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:brightness-110 active:scale-95',
         accent:
           'bg-gradient-to-r from-accent to-accent-light text-white shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:brightness-110 active:scale-95',
         outline:
-          'border border-border bg-transparent text-zinc-300 hover:bg-surface-alt hover:text-white hover:border-primary/50',
+          'border border-border bg-transparent text-[#EDE0CE] hover:bg-surface-alt hover:border-primary/50',
         ghost:
-          'bg-transparent text-muted-foreground hover:bg-surface-alt hover:text-white',
+          'bg-transparent text-muted-foreground hover:bg-surface-alt hover:text-[#EDE0CE]',
         destructive:
-          'bg-gradient-to-r from-red-600 to-rose-600 text-white hover:brightness-110 shadow-lg shadow-red-600/30',
+          'bg-gradient-to-r from-red-700 to-red-600 text-white hover:brightness-110 shadow-lg shadow-red-700/25',
         secondary:
-          'bg-surface-alt text-zinc-200 hover:bg-border border border-border/50',
+          'bg-surface-alt text-[#EDE0CE] hover:bg-border border border-border/50',
       },
       size: {
         default: 'h-10 px-5 py-2',
