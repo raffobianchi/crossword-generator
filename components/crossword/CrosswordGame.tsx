@@ -315,18 +315,18 @@ export function CrosswordGame({ puzzle, storageKey }: CrosswordGameProps) {
         <div className="flex items-center gap-3">
           {/* Timer */}
           <div className="flex items-center gap-1.5 rounded-lg bg-surface-alt px-3 py-1.5 border border-border">
-            <Clock className="h-3.5 w-3.5 text-zinc-400" />
-            <span className="font-mono text-sm text-zinc-300 tabular-nums">{formatTime(elapsed)}</span>
+            <Clock className="h-3.5 w-3.5 text-ink-muted" />
+            <span className="font-mono text-sm text-ink-soft tabular-nums">{formatTime(elapsed)}</span>
           </div>
           {/* Progress */}
           <div className="flex items-center gap-2">
-            <div className="h-1.5 w-24 rounded-full bg-surface-alt overflow-hidden">
+            <div className="h-1.5 w-24 rounded-full bg-[#DEC8B0] overflow-hidden">
               <div
-                className="h-full rounded-full bg-primary-light transition-all duration-500"
+                className="h-full rounded-full bg-primary transition-all duration-500"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
-            <span className="text-xs text-zinc-500">{progressPct}%</span>
+            <span className="text-xs text-ink-muted">{progressPct}%</span>
           </div>
         </div>
 
@@ -347,11 +347,11 @@ export function CrosswordGame({ puzzle, storageKey }: CrosswordGameProps) {
 
       {/* Completion banner */}
       {isCompleted && (
-        <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 animate-slide-up">
-          <Trophy className="h-5 w-5 text-emerald-400 shrink-0" />
+        <div className="flex items-center gap-3 rounded-xl border border-accent/40 bg-accent/10 px-4 py-3 animate-slide-up">
+          <Trophy className="h-5 w-5 text-accent-dark shrink-0" />
           <div>
-            <p className="font-medium text-emerald-300">Complimenti! Hai completato il cruciverba!</p>
-            <p className="text-sm text-emerald-400/70">Tempo: {formatTime(elapsed)}</p>
+            <p className="font-medium text-accent-dark">Complimenti! Hai completato il cruciverba!</p>
+            <p className="text-sm text-accent/80">Tempo: {formatTime(elapsed)}</p>
           </div>
         </div>
       )}
@@ -359,16 +359,16 @@ export function CrosswordGame({ puzzle, storageKey }: CrosswordGameProps) {
       {/* Mobile: active clue hint */}
       <div className="lg:hidden">
         <button
-          className="w-full flex items-center justify-between rounded-lg bg-surface-alt border border-border px-3 py-2.5 text-sm text-zinc-300"
+          className="w-full flex items-center justify-between rounded-lg bg-surface-alt border border-border px-3 py-2.5 text-sm text-ink-soft"
           onClick={() => setShowMobileClues(!showMobileClues)}
         >
           <div className="flex items-center gap-2">
-            <HelpCircle className="h-4 w-4 text-zinc-400" />
-            <span className="text-zinc-400">
+            <HelpCircle className="h-4 w-4 text-ink-muted" />
+            <span className="text-ink-muted">
               {selectedDirection === 'across' ? 'Orizzontale' : 'Verticale'}
             </span>
           </div>
-          <ChevronDown className={cn('h-4 w-4 text-zinc-400 transition-transform', showMobileClues && 'rotate-180')} />
+          <ChevronDown className={cn('h-4 w-4 text-ink-muted transition-transform', showMobileClues && 'rotate-180')} />
         </button>
         {showMobileClues && (
           <div className="mt-2 rounded-lg border border-border bg-surface p-4 max-h-64 overflow-y-auto">
@@ -400,7 +400,7 @@ export function CrosswordGame({ puzzle, storageKey }: CrosswordGameProps) {
             onArrow={handleArrow}
             onToggleDirection={() => setSelectedDirection((d) => (d === 'across' ? 'down' : 'across'))}
           />
-          <p className="mt-2 text-center text-xs text-zinc-600">
+          <p className="mt-2 text-center text-xs text-ink-faint">
             Clicca due volte per cambiare direzione · Tab per alternare · Frecce per spostarsi
           </p>
         </div>

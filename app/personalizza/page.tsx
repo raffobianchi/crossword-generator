@@ -16,33 +16,9 @@ const SIZES = [
 ] as const;
 
 const DIFFICULTIES = [
-  {
-    id: 'easy',
-    label: 'Facile',
-    desc: 'Parole brevi (3–7 lettere)',
-    activeText: 'text-accent-light',
-    activeBg: 'from-accent/15 to-accent/5',
-    activeBorder: 'border-accent/40',
-    dot: 'bg-accent-light',
-  },
-  {
-    id: 'medium',
-    label: 'Medio',
-    desc: 'Parole miste (4–10 lettere)',
-    activeText: 'text-nuts-light',
-    activeBg: 'from-nuts/15 to-nuts/5',
-    activeBorder: 'border-nuts/40',
-    dot: 'bg-nuts-light',
-  },
-  {
-    id: 'hard',
-    label: 'Difficile',
-    desc: 'Parole lunghe (5–15 lettere)',
-    activeText: 'text-primary-light',
-    activeBg: 'from-primary/15 to-primary/5',
-    activeBorder: 'border-primary/40',
-    dot: 'bg-primary-light',
-  },
+  { id: 'easy', label: 'Facile', desc: 'Parole brevi (3–7 lettere)', activeText: 'text-accent-dark', activeBg: 'from-accent/12 to-accent/5', activeBorder: 'border-accent/30', dot: 'bg-accent' },
+  { id: 'medium', label: 'Medio', desc: 'Parole miste (4–10 lettere)', activeText: 'text-nuts-dark', activeBg: 'from-nuts/12 to-nuts/5', activeBorder: 'border-nuts/30', dot: 'bg-nuts' },
+  { id: 'hard', label: 'Difficile', desc: 'Parole lunghe (5–15 lettere)', activeText: 'text-primary-dark', activeBg: 'from-primary/12 to-primary/5', activeBorder: 'border-primary/30', dot: 'bg-primary' },
 ] as const;
 
 type Size = (typeof SIZES)[number]['id'];
@@ -57,119 +33,65 @@ export default function PersonalizzaPage() {
   const [generationTime, setGenerationTime] = useState<number | null>(null);
 
   const handleGenerate = async () => {
-    setLoading(true);
-    setError(null);
-    setPuzzle(null);
+    setLoading(true); setError(null); setPuzzle(null);
     const start = Date.now();
-
     try {
-      const res = await fetch('/api/crossword/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ size: selectedSize, difficulty: selectedDifficulty }),
-      });
-
+      const res = await fetch('/api/crossword/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ size: selectedSize, difficulty: selectedDifficulty }) });
       const json = await res.json();
-
-      if (!res.ok || json.error) {
-        setError(json.error ?? 'Errore durante la generazione. Riprova.');
-        return;
-      }
-
+      if (!res.ok || json.error) { setError(json.error ?? 'Errore durante la generazione. Riprova.'); return; }
       setGenerationTime(Date.now() - start);
       setPuzzle(json.data as CrosswordPuzzle);
-    } catch {
-      setError('Errore di rete. Controlla la connessione e riprova.');
-    } finally {
-      setLoading(false);
-    }
+    } catch { setError('Errore di rete. Controlla la connessione e riprova.'); }
+    finally { setLoading(false); }
   };
 
   return (
     <div className="min-h-screen bg-radial-glow">
-      {/* Hero */}
-      <section className="border-b border-border/60 relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-nuts/10 blur-3xl" />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14 relative">
+      <section className="border-b border-border bg-surface/60">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
           <div className="flex items-center gap-2 mb-4">
-            <Badge variant="nuts">
-              <Sliders className="h-3 w-3 mr-1" />
-              Personalizza
-            </Badge>
+            <Badge variant="nuts"><Sliders className="h-3 w-3 mr-1" />Personalizza</Badge>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-balance">
-            <span className="text-[#EDE0CE]">Crea il </span>
+            <span className="text-ink">Crea il </span>
             <span className="text-gradient">Tuo Cruciverba</span>
           </h1>
-          <p className="mt-3 text-muted-foreground text-lg max-w-xl">
-            Scegli dimensione e difficoltà. L&apos;AI genererà un cruciverba unico in pochi secondi.
-          </p>
+          <p className="mt-3 text-ink-muted text-lg max-w-xl">Scegli dimensione e difficoltà. L&apos;AI genererà un cruciverba unico in pochi secondi.</p>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        {/* Configuration panel */}
-        <div className="rounded-2xl border border-border/60 bg-surface/80 p-6 lg:p-8 mb-8 backdrop-blur-sm">
+        <div className="rounded-2xl border border-border bg-white p-6 lg:p-8 mb-8 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Size */}
             <div>
-              <h2 className="font-serif text-lg font-semibold text-[#EDE0CE] mb-4">Dimensione</h2>
+              <h2 className="font-serif text-lg font-semibold text-ink mb-4">Dimensione</h2>
               <div className="grid grid-cols-2 gap-2.5">
                 {SIZES.map((size) => (
-                  <button
-                    key={size.id}
-                    onClick={() => setSelectedSize(size.id)}
-                    className={cn(
-                      'flex flex-col items-start gap-1 rounded-2xl border p-4 text-left transition-all duration-200',
-                      selectedSize === size.id
-                        ? 'border-primary/50 bg-gradient-to-br from-primary/15 to-nuts/10 shadow-md shadow-primary/10'
-                        : 'border-border/60 bg-surface-alt/50 hover:border-primary/30 hover:bg-surface-alt'
-                    )}
-                  >
+                  <button key={size.id} onClick={() => setSelectedSize(size.id)}
+                    className={cn('flex flex-col items-start gap-1 rounded-2xl border p-4 text-left transition-all duration-150',
+                      selectedSize === size.id ? 'border-primary/40 bg-primary/8 shadow-sm' : 'border-border bg-surface-alt hover:border-primary/25 hover:bg-[#F5EDE0]'
+                    )}>
                     <span className="text-xl">{size.emoji}</span>
-                    <span
-                      className={cn(
-                        'font-semibold text-sm',
-                        selectedSize === size.id ? 'text-primary-light' : 'text-[#EDE0CE]'
-                      )}
-                    >
-                      {size.label}
-                    </span>
-                    <span className="text-xs text-muted-foreground font-mono">{size.desc}</span>
+                    <span className={cn('font-semibold text-sm', selectedSize === size.id ? 'text-primary-dark' : 'text-ink')}>{size.label}</span>
+                    <span className="text-xs text-ink-muted font-mono">{size.desc}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Difficulty */}
             <div>
-              <h2 className="font-serif text-lg font-semibold text-[#EDE0CE] mb-4">Difficoltà</h2>
+              <h2 className="font-serif text-lg font-semibold text-ink mb-4">Difficoltà</h2>
               <div className="flex flex-col gap-2.5">
                 {DIFFICULTIES.map((diff) => (
-                  <button
-                    key={diff.id}
-                    onClick={() => setSelectedDifficulty(diff.id)}
-                    className={cn(
-                      'flex items-center justify-between rounded-2xl border p-4 text-left transition-all duration-200',
-                      selectedDifficulty === diff.id
-                        ? `bg-gradient-to-r ${diff.activeBg} ${diff.activeBorder}`
-                        : 'border-border/60 bg-surface-alt/50 hover:border-primary/30 hover:bg-surface-alt'
-                    )}
-                  >
+                  <button key={diff.id} onClick={() => setSelectedDifficulty(diff.id)}
+                    className={cn('flex items-center justify-between rounded-2xl border p-4 text-left transition-all duration-150',
+                      selectedDifficulty === diff.id ? `bg-gradient-to-r ${diff.activeBg} ${diff.activeBorder}` : 'border-border bg-surface-alt hover:border-primary/25 hover:bg-[#F5EDE0]'
+                    )}>
                     <div>
-                      <span
-                        className={cn(
-                          'font-semibold text-sm block',
-                          selectedDifficulty === diff.id ? diff.activeText : 'text-[#EDE0CE]'
-                        )}
-                      >
-                        {diff.label}
-                      </span>
-                      <span className="text-xs text-muted-foreground mt-0.5">{diff.desc}</span>
+                      <span className={cn('font-semibold text-sm block', selectedDifficulty === diff.id ? diff.activeText : 'text-ink')}>{diff.label}</span>
+                      <span className="text-xs text-ink-muted mt-0.5">{diff.desc}</span>
                     </div>
-                    {selectedDifficulty === diff.id && (
-                      <div className={`h-2.5 w-2.5 rounded-full ${diff.dot} shadow-sm`} />
-                    )}
+                    {selectedDifficulty === diff.id && <div className={`h-2.5 w-2.5 rounded-full ${diff.dot}`} />}
                   </button>
                 ))}
               </div>
@@ -178,97 +100,59 @@ export default function PersonalizzaPage() {
 
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
             <Button size="lg" onClick={handleGenerate} disabled={loading} className="w-full sm:w-auto px-10">
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Generazione in corso…
-                </>
-              ) : (
-                <>
-                  <Leaf className="h-4 w-4 mr-2" />
-                  Genera Cruciverba
-                </>
-              )}
+              {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Generazione in corso…</> : <><Leaf className="h-4 w-4 mr-2" />Genera Cruciverba</>}
             </Button>
             {generationTime && !loading && (
-              <p className="text-xs text-muted-foreground">
-                Generato in{' '}
-                <span className="text-primary-light font-medium">
-                  {(generationTime / 1000).toFixed(1)}s
-                </span>
-              </p>
+              <p className="text-xs text-ink-muted">Generato in <span className="text-primary-dark font-medium">{(generationTime / 1000).toFixed(1)}s</span></p>
             )}
           </div>
         </div>
 
-        {/* Error state */}
         {error && (
-          <div className="flex items-start gap-3 rounded-2xl border border-red-800/40 bg-red-900/20 px-4 py-3 mb-6 animate-fade-in">
-            <AlertCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 mb-6 animate-fade-in">
+            <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-red-300 text-sm">Errore di generazione</p>
-              <p className="text-sm text-red-400/70 mt-0.5">{error}</p>
+              <p className="font-semibold text-red-700 text-sm">Errore di generazione</p>
+              <p className="text-sm text-red-600/80 mt-0.5">{error}</p>
             </div>
           </div>
         )}
 
-        {/* Loading placeholder */}
         {loading && (
           <div className="flex flex-col items-center gap-6 py-20 animate-fade-in">
-            <div className="relative">
-              <div className="h-20 w-20 rounded-3xl border-2 border-primary/40 bg-gradient-to-br from-primary/10 to-nuts/5 flex items-center justify-center animate-glow">
-                <Loader2 className="h-9 w-9 text-primary-light animate-spin" />
-              </div>
-              <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent animate-pulse" />
+            <div className="h-20 w-20 rounded-3xl border-2 border-primary/30 bg-primary/8 flex items-center justify-center animate-glow">
+              <Loader2 className="h-9 w-9 text-primary animate-spin" />
             </div>
             <div className="text-center">
-              <p className="font-serif text-2xl text-[#EDE0CE]">Generazione in corso…</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                L&apos;AI sta costruendo il tuo cruciverba personalizzato
-              </p>
+              <p className="font-serif text-2xl text-ink">Generazione in corso…</p>
+              <p className="text-sm text-ink-muted mt-1">L&apos;AI sta costruendo il tuo cruciverba personalizzato</p>
             </div>
           </div>
         )}
 
-        {/* Puzzle */}
         {puzzle && !loading && (
           <div className="animate-slide-up">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-[#EDE0CE]">Il Tuo Cruciverba</h2>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  <span className="text-primary-light font-medium">{puzzle.wordCount} parole</span>
-                  {' · '}
-                  {puzzle.size}×{puzzle.size}
-                  {' · '}
-                  {DIFFICULTIES.find((d) => d.id === selectedDifficulty)?.label}
+                <h2 className="font-serif text-2xl font-bold text-ink">Il Tuo Cruciverba</h2>
+                <p className="text-sm text-ink-muted mt-0.5">
+                  <span className="text-primary-dark font-medium">{puzzle.wordCount} parole</span>{' · '}{puzzle.size}×{puzzle.size}{' · '}{DIFFICULTIES.find((d) => d.id === selectedDifficulty)?.label}
                 </p>
               </div>
-              <Button variant="outline" size="sm" onClick={handleGenerate}>
-                <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-                Rigenera
-              </Button>
+              <Button variant="outline" size="sm" onClick={handleGenerate}><RefreshCw className="h-3.5 w-3.5 mr-1.5" />Rigenera</Button>
             </div>
             <CrosswordGame puzzle={puzzle} />
           </div>
         )}
 
-        {/* Empty state */}
         {!puzzle && !loading && !error && (
           <div className="flex flex-col items-center gap-5 py-24 text-center">
-            <div className="relative">
-              <div className="h-24 w-24 rounded-3xl border border-border/60 bg-gradient-to-br from-surface-alt to-surface flex items-center justify-center animate-float">
-                <span className="text-4xl">🧩</span>
-              </div>
-              <div className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-primary/40 border border-primary/50 animate-pulse" />
-              <div className="absolute -bottom-1 -left-1 h-3 w-3 rounded-full bg-accent/50 border border-accent/60 animate-pulse" style={{ animationDelay: '0.6s' }} />
+            <div className="h-24 w-24 rounded-3xl border border-border bg-surface-alt flex items-center justify-center animate-float shadow-sm">
+              <span className="text-4xl">🧩</span>
             </div>
             <div>
-              <p className="font-serif text-2xl text-[#EDE0CE]">Nessun cruciverba generato</p>
-              <p className="text-sm text-muted-foreground mt-1.5">
-                Configura le opzioni qui sopra e premi{' '}
-                <span className="text-primary-light">"Genera Cruciverba"</span>
-              </p>
+              <p className="font-serif text-2xl text-ink">Nessun cruciverba generato</p>
+              <p className="text-sm text-ink-muted mt-1.5">Configura le opzioni qui sopra e premi <span className="text-primary-dark font-medium">"Genera Cruciverba"</span></p>
             </div>
           </div>
         )}
