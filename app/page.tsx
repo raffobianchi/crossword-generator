@@ -14,11 +14,15 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-radial-glow">
       {/* Hero section */}
-      <section className="border-b border-border bg-surface/50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+      <section className="border-b border-border/60 relative overflow-hidden">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-accent/8 blur-3xl" />
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14 relative">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-4">
                 <Badge variant="accent">
                   <Calendar className="h-3 w-3 mr-1" />
                   Oggi
@@ -28,14 +32,16 @@ export default function HomePage() {
                   Giornaliero
                 </Badge>
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-100 text-balance">
-                Il Cruciverba di Oggi
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-balance">
+                <span className="text-gradient">Il Cruciverba</span>
+                <br />
+                <span className="text-zinc-100">di Oggi</span>
               </h1>
-              <p className="mt-2 text-zinc-400 capitalize text-lg">{dateString}</p>
+              <p className="mt-3 text-muted-foreground capitalize text-lg">{dateString}</p>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-zinc-500">
-              <Users className="h-4 w-4" />
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-surface/60 border border-border/50 rounded-xl px-4 py-2.5">
+              <Users className="h-4 w-4 text-fun-cyan" />
               <span>Lo stesso per tutta Italia</span>
             </div>
           </div>
@@ -50,31 +56,41 @@ export default function HomePage() {
       </section>
 
       {/* Info strip */}
-      <section className="border-t border-border bg-surface/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <section className="border-t border-border/60 bg-surface/30">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               {
                 icon: '🇮🇹',
+                iconBg: 'from-primary/20 to-primary/5 border-primary/20',
                 title: 'Solo in Italiano',
                 desc: 'Parole e definizioni interamente in italiano, dal nostro dizionario di oltre 49.000 voci.',
               },
               {
                 icon: '🤖',
-                title: 'Generato dall\'AI',
+                iconBg: 'from-accent/20 to-accent/5 border-accent/20',
+                title: "Generato dall'AI",
                 desc: 'Ogni cruciverba è generato automaticamente ogni giorno alle mezzanotte.',
               },
               {
                 icon: '🧩',
+                iconBg: 'from-fun-cyan/15 to-fun-cyan/5 border-fun-cyan/20',
                 title: 'Un puzzle al giorno',
                 desc: 'Il cruciverba giornaliero è uguale per tutti. Confronta il tuo tempo con gli amici!',
               },
             ].map((item) => (
-              <div key={item.title} className="flex gap-3">
-                <span className="text-2xl shrink-0">{item.icon}</span>
+              <div
+                key={item.title}
+                className="flex gap-4 rounded-2xl bg-surface/50 border border-border/50 p-4 hover:border-primary/30 transition-colors"
+              >
+                <div
+                  className={`shrink-0 h-11 w-11 rounded-xl bg-gradient-to-br ${item.iconBg} border flex items-center justify-center text-xl`}
+                >
+                  {item.icon}
+                </div>
                 <div>
-                  <h3 className="font-medium text-zinc-200 text-sm">{item.title}</h3>
-                  <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{item.desc}</p>
+                  <h3 className="font-semibold text-zinc-200 text-sm">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -89,10 +105,12 @@ function PuzzleSkeleton() {
   return (
     <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
       <div className="flex-shrink-0 mx-auto">
-        <div className="rounded-lg overflow-hidden bg-surface-alt animate-pulse-soft"
-          style={{ width: 494, height: 494 }} />
+        <div
+          className="rounded-2xl overflow-hidden bg-surface-alt animate-pulse-soft border border-border/50"
+          style={{ width: 494, height: 494 }}
+        />
       </div>
-      <div className="hidden lg:block min-w-[240px] max-w-[300px] w-full rounded-xl bg-surface-alt h-96 animate-pulse-soft" />
+      <div className="hidden lg:block min-w-[240px] max-w-[300px] w-full rounded-2xl bg-surface-alt border border-border/50 h-96 animate-pulse-soft" />
     </div>
   );
 }

@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Grid3X3, Sparkles, Menu, X } from 'lucide-react';
+import { LayoutGrid, Wand2, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/', label: 'Cruciverba del Giorno' },
+  { href: '/', label: 'Giornaliero' },
   { href: '/personalizza', label: 'Crea il Tuo' },
 ];
 
@@ -16,15 +16,19 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+      {/* Gradient line at top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-light/60 to-transparent" />
+
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-lg shadow-primary/30 transition-all group-hover:shadow-primary/50">
-            <Grid3X3 className="h-4 w-4 text-white" />
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/40 transition-all duration-300 group-hover:shadow-primary/60 group-hover:scale-105">
+            <LayoutGrid className="h-4.5 w-4.5 text-white" style={{ height: '1.125rem', width: '1.125rem' }} />
           </div>
-          <span className="font-serif text-xl font-bold text-zinc-100">
-            enigmistica<span className="text-primary-light">.ai</span>
+          <span className="font-serif text-xl font-bold">
+            <span className="text-gradient">enigmistica</span>
+            <span className="text-zinc-400">.ai</span>
           </span>
         </Link>
 
@@ -35,28 +39,31 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                'rounded-lg px-4 py-2 text-sm font-medium transition-all',
+                'relative rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200',
                 pathname === item.href
-                  ? 'bg-primary/10 text-primary-light'
-                  : 'text-zinc-400 hover:bg-surface-alt hover:text-zinc-200'
+                  ? 'text-primary-light'
+                  : 'text-muted-foreground hover:text-zinc-200'
               )}
             >
-              {item.label}
+              {pathname === item.href && (
+                <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/15 to-accent/10 border border-primary/25" />
+              )}
+              <span className="relative">{item.label}</span>
             </Link>
           ))}
         </nav>
 
         {/* Right side */}
         <div className="hidden md:flex items-center gap-3">
-          <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs text-primary-light border border-primary/20">
-            <Sparkles className="h-3 w-3" />
-            <span>AI Powered</span>
+          <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary/15 to-accent/10 px-3 py-1 text-xs font-medium text-primary-light border border-primary/25">
+            <Wand2 className="h-3 w-3" />
+            <span>AI Generato</span>
           </div>
         </div>
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden rounded-lg p-2 text-zinc-400 hover:bg-surface-alt hover:text-white transition-colors"
+          className="md:hidden rounded-xl p-2 text-muted-foreground hover:bg-surface-alt hover:text-white transition-all"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -66,17 +73,17 @@ export function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-surface px-4 py-3 space-y-1">
+        <div className="md:hidden border-t border-border/60 bg-surface px-4 py-3 space-y-1 animate-fade-in">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'block rounded-lg px-4 py-2.5 text-sm font-medium transition-all',
+                'block rounded-xl px-4 py-2.5 text-sm font-medium transition-all',
                 pathname === item.href
-                  ? 'bg-primary/10 text-primary-light'
-                  : 'text-zinc-400 hover:bg-surface-alt hover:text-zinc-200'
+                  ? 'bg-gradient-to-r from-primary/15 to-accent/10 text-primary-light border border-primary/25'
+                  : 'text-muted-foreground hover:bg-surface-alt hover:text-zinc-200'
               )}
             >
               {item.label}

@@ -4,16 +4,22 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20',
-        accent: 'bg-accent text-white hover:bg-accent/90 shadow-lg shadow-accent/20',
-        outline: 'border border-border bg-transparent text-zinc-300 hover:bg-surface-alt hover:text-white',
-        ghost: 'bg-transparent text-zinc-400 hover:bg-surface-alt hover:text-white',
-        destructive: 'bg-red-600 text-white hover:bg-red-700',
-        secondary: 'bg-surface-alt text-zinc-200 hover:bg-border',
+        default:
+          'bg-gradient-to-r from-primary to-primary-light text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:brightness-110 active:scale-95',
+        accent:
+          'bg-gradient-to-r from-accent to-accent-light text-white shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:brightness-110 active:scale-95',
+        outline:
+          'border border-border bg-transparent text-zinc-300 hover:bg-surface-alt hover:text-white hover:border-primary/50',
+        ghost:
+          'bg-transparent text-muted-foreground hover:bg-surface-alt hover:text-white',
+        destructive:
+          'bg-gradient-to-r from-red-600 to-rose-600 text-white hover:brightness-110 shadow-lg shadow-red-600/30',
+        secondary:
+          'bg-surface-alt text-zinc-200 hover:bg-border border border-border/50',
       },
       size: {
         default: 'h-10 px-5 py-2',
